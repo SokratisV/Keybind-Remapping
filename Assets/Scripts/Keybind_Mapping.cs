@@ -39,11 +39,6 @@ public class Keybind_Mapping : MonoBehaviour
         }
     }
 
-    public void DoNothing()
-    {
-        print("Blah");
-    }
-
     /*
      * Coroutine instead of function for new thread. Removes the two entries from the dictionary,
      * and adds new ones with swapped Keys. Holds and uses previous Values (Commands).
@@ -57,13 +52,14 @@ public class Keybind_Mapping : MonoBehaviour
         dict.Remove(bind2);
 
         dict.Add(bind2, tempCommand1);
-        print("Binding: " + bind2 + " to "); //debug
-        tempCommand1.Execute();
-
         dict.Add(bind1, tempCommand2);
-        print("Binding: " + bind1 + " to "); //debug
-        tempCommand2.Execute();
 
+        /////////////--DEBUG--/////////////
+        print("Binding: " + bind2 + " to -->");
+        tempCommand1.Execute();
+        print("Binding: " + bind1 + " to -->"); 
+        tempCommand2.Execute();
+        //////////////////////////////////
         bind1 = "";
         bind2 = "";
         yield return null;
