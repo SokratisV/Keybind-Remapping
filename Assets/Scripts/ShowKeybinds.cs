@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Keybinds;
 
 public class ShowKeybinds : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class ShowKeybinds : MonoBehaviour
         foreach (KeyValuePair<string, Command> item in script.Dict)
         {
             Button temp = Instantiate(button, gameObject.transform);
-            temp.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.Key;
+            temp.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.Key + "-" + item.Value.ToString();
             temp.onClick.AddListener(delegate { script.Rebind(item.Key); });
         }
     }
@@ -28,18 +29,16 @@ public class ShowKeybinds : MonoBehaviour
         }
     }
 
-    // Not working yet
     public void Refresh()
     {
         foreach (Transform item in transform)
         {
             Destroy(item.gameObject);
         }
-        print("Destroyed, creating new (Not working yet)");
         foreach (KeyValuePair<string, Command> item in script.Dict)
         {
             Button temp = Instantiate(button, gameObject.transform);
-            temp.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.Key;
+            temp.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = item.Key + "-" + item.Value.ToString();
             temp.onClick.AddListener(delegate { script.Rebind(item.Key); });
         }
     }

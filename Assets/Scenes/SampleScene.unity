@@ -449,6 +449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bind1: 
   bind2: 
+  script: {fileID: 789979089}
 --- !u!4 &1436157118
 Transform:
   m_ObjectHideFlags: 0
