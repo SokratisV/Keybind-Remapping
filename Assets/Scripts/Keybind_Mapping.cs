@@ -18,6 +18,7 @@ public class Keybind_Mapping : MonoBehaviour
     [SerializeField]
     private bool editMode = false;
 
+
     public GameObject canvas;
 
 
@@ -65,7 +66,7 @@ public class Keybind_Mapping : MonoBehaviour
         {
             if (Input.GetKey(keyCode = (KeyCode)Enum.Parse(typeof(KeyCode), bind.Key)))
             {
-                bind.Value.Execute(GameManager.FocusObject);
+                bind.Value.Execute(GameManager.FocusObject, bind.Value);
             }
         }
     }
@@ -213,63 +214,152 @@ public class Keybind_Mapping : MonoBehaviour
 
 internal class MoveRight : Command
 {
-    public override void Execute(GameObject obj)
+    public override void Execute(GameObject obj, Command command)
     {
         Debug.Log("Moving Right");
         obj.GetComponent<Rigidbody>().AddForce(Vector3.right * moveForce);
+        GameManager.ListOfCommands.Add(command);
+    }
+
+    public override void Redo(GameObject obj)
+    {
+        Debug.Log("Re-Moving Right");
+        obj.GetComponent<Rigidbody>().AddForce(Vector3.right * moveForce);
+    }
+
+    public override void Undo(GameObject obj)
+    {
+        Debug.Log("Un-Moving Right");
+        obj.GetComponent<Rigidbody>().AddForce(-Vector3.right * moveForce);
     }
 }
 internal class MoveLeft : Command
 {
-    public override void Execute(GameObject obj)
+    public override void Execute(GameObject obj, Command command)
     {
         Debug.Log("Moving Left");
         obj.GetComponent<Rigidbody>().AddForce(Vector3.left * moveForce);
+        GameManager.ListOfCommands.Add(command);
+    }
+
+    public override void Redo(GameObject obj)
+    {
+        Debug.Log("Re-Moving Left");
+        obj.GetComponent<Rigidbody>().AddForce(Vector3.left * moveForce);
+    }
+
+    public override void Undo(GameObject obj)
+    {
+        Debug.Log("Un-Moving Left");
+        obj.GetComponent<Rigidbody>().AddForce(-Vector3.left * moveForce);
     }
 }
 internal class Attack : Command
 {
-    public override void Execute(GameObject obj)
+    public override void Execute(GameObject obj, Command command)
     {
         Debug.Log("Attacking");
+    }
+
+    public override void Redo(GameObject obj)
+    {
+        Debug.Log("Re-Attacking");
+    }
+
+    public override void Undo(GameObject obj)
+    {
+        Debug.Log("Un-Attacking");
     }
 }
 internal class MoveForwards : Command
 {
-    public override void Execute(GameObject obj)
+    public override void Execute(GameObject obj, Command command)
     {
-        obj.GetComponent<Rigidbody>().AddForce(Vector3.forward * moveForce);
         Debug.Log("MovingForward");
+        obj.GetComponent<Rigidbody>().AddForce(Vector3.forward * moveForce);
+        GameManager.ListOfCommands.Add(command);
+    }
+
+    public override void Redo(GameObject obj)
+    {
+        Debug.Log("Re-MovingForward");
+        obj.GetComponent<Rigidbody>().AddForce(Vector3.forward * moveForce);
+    }
+
+    public override void Undo(GameObject obj)
+    {
+        Debug.Log("Un-MovingForward");
+        obj.GetComponent<Rigidbody>().AddForce(-Vector3.forward * moveForce);
     }
 }
 internal class Jump : Command
 {
-    public override void Execute(GameObject obj)
+    public override void Execute(GameObject obj, Command command)
     {
         Debug.Log("Jumping");
-        obj.GetComponent<Rigidbody>().AddForce(Vector3.up * 40);
+        obj.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce);
+        GameManager.ListOfCommands.Add(command);
+    }
+
+    public override void Redo(GameObject obj)
+    {
+        Debug.Log("Re-Jumping");
+        obj.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce);
+    }
+
+    public override void Undo(GameObject obj)
+    {
+        Debug.Log("Un-Jumping");
+        obj.GetComponent<Rigidbody>().AddForce(-Vector3.up * jumpForce);
     }
 }
 internal class DoNothing : Command
 {
-    public override void Execute(GameObject obj)
+    public override void Execute(GameObject obj, Command command)
     {
         Debug.Log("Doing Nothing");
+    }
+
+    public override void Redo(GameObject obj)
+    {
+        Debug.Log("Re-Doing Nothing");
+    }
+
+    public override void Undo(GameObject obj)
+    {
+        Debug.Log("Un-Doing Nothing");
     }
 }
 internal class MoveBackwards : Command
 {
-    public override void Execute(GameObject obj)
+    public override void Execute(GameObject obj, Command command)
     {
         Debug.Log("Moving back");
         obj.GetComponent<Rigidbody>().AddForce(Vector3.back * moveForce);
+        GameManager.ListOfCommands.Add(command);
+    }
+
+    public override void Redo(GameObject obj)
+    {
+        Debug.Log("Re-Moving back");
+        obj.GetComponent<Rigidbody>().AddForce(Vector3.back * moveForce);
+    }
+
+    public override void Undo(GameObject obj)
+    {
+        Debug.Log("Undo-Moving back");
+        obj.GetComponent<Rigidbody>().AddForce(-Vector3.back * moveForce);
     }
 }
 
 public abstract class Command
 {
     protected float moveForce = 20f;
-    public abstract void Execute(GameObject obj);
+    protected float jumpForce = 40f;
+
+    public abstract void Execute(GameObject obj, Command command);
+    public abstract void Redo(GameObject obj);
+    public abstract void Undo(GameObject obj);
 }
 
 
